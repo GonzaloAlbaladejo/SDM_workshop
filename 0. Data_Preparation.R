@@ -150,14 +150,47 @@ hill_shade <- terra::shade(slope=terra::terrain(elev_equal,v=c("slope"),unit="ra
                                                 aspect=terra::terrain(elev_equal,v=c("aspect"),unit="radians")
                            ) # Calculate the hillshade map for plotting porpuses. Need to specify the units of slope and aspect as radians
 
+# f. Get some future climatic data for forecasting----
+clim_change_route <- "./Data/Spatial/BioClim/Scenarios" ; clim_change_route %>% dir.create(showWarnings = FALSE,recursive = TRUE)
+scenarios<-c("126","245","370","585")
+
+for(i in scenarios){
+  save_route<-paste(clim_change_route,i,sep="/") ; save_route  %>% dir.create(recursive = TRUE,showWarnings = FALSE)
+  geodata::cmip6_world(model="MPI-ESM1-2-HR",ssp=i,time="2061-2080",var="bioc",res=2.5,path=save_route)
+}
+
+# Process the spatial information
+scenarios_route <- clim_change_route %>% list.files(pattern=".tif$",recursive = TRUE,full.names = TRUE)
+
+for(i in scenarios){
+  # Load the scenarios
+  x<-scenarios_route[scenarios_route %>% grepl(pattern=i)] %>% rast()
+  names(x) <- names(x) %>% gsub(pattern=paste0("_MPI-ESM1-2-HR_ssp",i,"_2061-2080"),replacement="") %>% gsub(pattern="bioc_",replacement="bio_")
+  
+  # Adapt the layer
+  x <- x %>% project(y=ref_rast) %>% mask(Africa_pol %>% vect())
+  x <- x %>% resample(y=ref_rast)
+  
+  # Export the information
+  exit_lyr <- paste("./Data/Spatial/Processed/Scenarios",paste0("spp",i),sep="/")
+  dir.create(exit_lyr,showWarnings = FALSE,recursive = TRUE)
+  x %>% writeRaster(paste(exit_lyr,paste0("Bio_Spp_",i,".tif"),sep="/"))
+  
+  plot(x$wc2.1_2.5m_bioc_1)
+}
+
+
 # 2. Load and process the IUCN range information----
 # The IUCN Red-List of Threatened species contains spatial data regarding the range and distribution for hundred of thousands 
 # of species. We are going to load a small sample of this spatial information for the species we are going to model.
 # a. Get the names of the species selected for the analysis (These are their names as they appear int the IUCN)
-Species_analysis <- c("Cephalophus dorsalis","Cephalophus natalensis","Cephalophus rufilatus",  
-                      "Cephalophus silvicultor","Eidolon helvum","Epomophorus gambianus",                     
-                      "Gorilla beringei","Epomophorus pusillus","Pan troglodytes",
-                      "Rousettus aegyptiacus")
+
+Species_analysis <- c(#"Cephalophus dorsalis","Cephalophus natalensis","Cephalophus rufilatus",  
+                      #"Cephalophus silvicultor",
+                      "Eidolon helvum")
+                      #,"Epomophorus gambianus",                     
+                      #"Gorilla beringei","Epomophorus pusillus","Pan troglodytes",
+                      #"Rousettus aegyptiacus")
 
 # Get the Spatial data from a local folder containing the IUCN spatial information (skip)
 route_IUCN_pols <- "./Data/SP_Info/IUCN_range" %>% list.files(pattern=".shp$",recursive=T,full.names = TRUE)
@@ -187,7 +220,7 @@ study_area %>% st_write(paste("./Data/Spatial/Processed/Vector","CountryPols.shp
 pol_region %>% st_write(paste("./Data/Spatial/Processed/Vector","pol_region.shp",sep="/"),append=F)
 
 # b. Species ranges----
-IUCN_pols %>% st_write(paste("./Data/Spatial/Processed/Vector","IUCN_ranges.shp",sep="/"),append=F)
+# IUCN_pols %>% st_write(paste("./Data/Spatial/Processed/Vector","IUCN_ranges.shp",sep="/"),append=F)
 
 # c. Environmental information----
 "./Data/Spatial/Processed/Raster" %>% dir.create(recursive = T,showWarnings = F)

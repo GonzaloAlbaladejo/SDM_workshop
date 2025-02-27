@@ -628,13 +628,31 @@ By default MaxEnt requires more background data than the other methods, we are g
   Train.m # We can access the model performance and other information by calling the model
   
   MaxEnt.mod <- predict(Train.m,env_data)
-  Maxend.Pred <- plot(MaxEnt.mod)
+  
+```
+
+```{r display MaxEnt}
+plot(MaxEnt.mod,col=viridis::viridis(n=200))
 ```
 
 # 3. Export the models final models
 ```{r}
-list(ENFA=ENFA.r,
-     )
+# Create exit directory
+exit_route <- paste("./Results/SDM_models",spp,sep="/") ; exit_route %>% dir.create(recursive=TRUE)
+
+# Exoirt the final models
+mod.list<-list(
+                NFA=ENFA.r,
+                GLM=glm.2,
+                RF=rf.2,
+                ANN=init.final,
+                MaxEnt=Train.m
+                )
+
+# Export the results
+saveRDS(mod.list, 
+        paste(exit_route,"SDMmodels.rds",sep="/"))
+
 ```
 
 End of the script
