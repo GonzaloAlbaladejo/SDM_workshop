@@ -1,7 +1,7 @@
 ---
 title: |
   |Introduction to Species distribution modelling
-  | Models and adjustment
+  | Model forecasting and averaging
 author: "Gonzalo Albaladejo-Robles"
 date: "27/02/2025"
 output:
@@ -86,10 +86,10 @@ names(fut_env$Bio_Spp_126) %in% names(env_data)
 
 * b. Display the information
 ```{r}
-panel(c(fut_env$Bio_Spp_126.tif$wc2.1_2.5m_bioc_1,
-          fut_env$Bio_Spp_245.tif$wc2.1_2.5m_bioc_1,
-            fut_env$Bio_Spp_370.tif$wc2.1_2.5m_bioc_1,
-              fut_env$Bio_Spp_585.tif$wc2.1_2.5m_bioc_1),col=viridis::inferno(200))
+panel(c(fut_env$Bio_Spp_126$wc2.1_2.5m_bio_1,
+          fut_env$Bio_Spp_245$wc2.1_2.5m_bio_1,
+            fut_env$Bio_Spp_370$wc2.1_2.5m_bio_1,
+              fut_env$Bio_Spp_585$wc2.1_2.5m_bio_1),col=viridis::inferno(200))
 ```
 
 # 2. load the saved models----
@@ -100,14 +100,15 @@ models<-readRDS(list.files(paste("./Results/SDM_models","Eidolon helvum",sep="/"
 
 # 2.1 Predict the future scenarios GLM
 ```{r}
-p.GLM<-predict(env_data,models$GLM) # Present scenario
-f.GLM<-lapply( ,function(x) predict(x,models$GLM)) # Future scenario
+p.GLM<-predict(env_data,models$GLM,type="response") # Present scenario
+f.GLM<-lapply(fut_env,function(x) predict(x,models$GLM,type="response")) # Future scenario
 
 ```
 
 * a Compare the scenarios
 ```{r}
-
+plot(p.GLMviridis::inferno(100))
+panel(rast(future.s),viridis::inferno(100))
 ```
 
 # 2.2 Predict the future scenarios RF

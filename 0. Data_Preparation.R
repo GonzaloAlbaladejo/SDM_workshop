@@ -174,9 +174,9 @@ for(i in scenarios){
   # Export the information
   exit_lyr <- paste("./Data/Spatial/Processed/Scenarios",paste0("spp",i),sep="/")
   dir.create(exit_lyr,showWarnings = FALSE,recursive = TRUE)
-  x %>% writeRaster(paste(exit_lyr,paste0("Bio_Spp_",i,".tif"),sep="/"))
+  x %>% writeRaster(paste(exit_lyr,paste0("Bio_Spp_",i,".tif"),sep="/"),overwrite=T)
   
-  plot(x$wc2.1_2.5m_bioc_1)
+  plot(x$wc2.1_2.5m_bio_1)
 }
 
 
