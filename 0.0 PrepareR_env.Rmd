@@ -1,0 +1,177 @@
+---
+title: "0.0 PrepareR_env.Rmd"
+author: "Gonzalo"
+date: "2025-02-27"
+output: html_document
+---
+
+# This code will install all the needed packages to carried out the analysis!
+```{r setup, include=FALSE}
+# 0. Load the packages----
+list.of.packages<-c("abind","ade4"                  "adehabitatHR"         
+  [4] "adehabitatHS","adehabitatLT"          "adehabitatMA"         
+  [7] "ape","arm"                   "ash"                  
+ [10] "askpass","assertthat"            "audio"                
+ [13] "backports","base64enc"             "bayestestR"           
+ [16] "beepr","bestNormalize"         "BH"                   
+ [19] "BIEN","biomod2"               "bit"                  
+ [22] "bit64","bitops"                "blmeco"               
+ [25] "blob","bold"                  "brew"                 
+ [28] "brio","broom"                 "bslib"                
+ [31] "butcher","cachem"                "callr"                
+ [34] "car","carData"               "caret"                
+ [37] "caTools","cellranger"            "checkmate"            
+ [40] "CircStats","classInt"              "cli"                  
+ [43] "clipr","clock"                 "coda"                 
+ [46] "colorspace","commonmark","conditionz"           
+ [49] "conflicted","CoordinateCleaner","corrplot"             
+ [52] "countrycode","cowplot","cpp11"                
+ [55] "crayon","credentials","crosstalk"            
+ [58] "crul","curl","data.table"           
+ [61] "datawizard","DBI","dbplyr"               
+ [64] "deldir","desc","devtools"             
+ [67] "diagram","diffobj","digest"               
+ [70] "dismo","doParallel","doRNG"                
+ [73] "doSNOW","dotCall64","downlit"              
+ [76] "dplyr","dtplyr","e1071"                
+ [79] "elevatr","ellipsis","ENMeval"              
+ [82] "evaluate","exactextractr","fansi"                
+ [85] "farver","fastcluster","fasterize"            
+ [88] "fastmap","fastmatch","fields"               
+ [91] "FNN","fontawesome","forcats"              
+ [94] "foreach","Formula","fs"                   
+ [97] "furrr"                 "future"                "future.apply"         
+[100] "gargle"                "gbm"                   "generics"             
+[103] "geodata"               "geometry"              "geosphere"            
+[106] "gert"                  "ggfittext"             "ggplot2"              
+[109] "ggspatial"             "ggtext"                "gh"                   
+[112] "gitcreds"              "glmnet"                "globals"              
+[115] "glue"                  "goftest"               "googledrive"          
+[118] "googlesheets4"         "gower"                 "gplots"               
+[121] "gridBase"              "gridExtra"             "gridtext"             
+[124] "gtable"                "gtools"                "gurobi"               
+[127] "hardhat"               "haven"                 "hdrcde"               
+[130] "hexbin"                "highr"                 "highs"                
+[133] "hitandrun"             "Hmisc"                 "hms"                  
+[136] "htmlTable"             "htmltools"             "htmlwidgets"          
+[139] "httpcode"              "httpuv"                "httr"                 
+[142] "httr2"                 "hypervolume"           "ids"                  
+[145] "igraph"                "ini"                   "insight"              
+[148] "interp"                "ipred"                 "isoband"              
+[151] "iterators"             "jpeg"                  "jquerylib"            
+[154] "jsonlite"              "kableExtra"            "kernlab"              
+[157] "knitr"                 "ks"                    "labeling"             
+[160] "LambertW"              "lamW"                  "later"                
+[163] "latticeExtra"          "lava"                  "lazyeval"             
+[166] "leaflet"               "leaflet.providers"     "lifecycle"            
+[169] "linprog"               "listenv"               "lme4"                 
+[172] "lobstr"                "locfit"                "lpSolve"              
+[175] "lubridate"             "lwgeom"                "magic"                
+[178] "magrittr"              "maplegend"             "maps"                 
+[181] "mapsf"                 "maptools"              "maptree"              
+[184] "markdown"              "Matrix"                "MatrixModels"         
+[187] "maxnet"                "mclust"                "memoise"              
+[190] "mime"                  "miniUI"                "minqa"                
+[193] "misc3d"                "mnormt"                "ModelMetrics"         
+[196] "modelr"                "multicool"             "munsell"              
+[199] "mvtnorm"               "nabor"                 "natserv"              
+[202] "ncdf4"                 "nloptr"                "nngeo"                
+[205] "nortest"               "numDeriv"              "oai"                  
+[208] "openssl"               "palmerpenguins"        "parallelly"           
+[211] "pbapply"               "pbkrtest"              "PBSmapping"           
+[214] "pdftools"              "pdist"                 "performance"          
+[217] "phangorn"              "pillar"                "pixmap"               
+[220] "pkgbuild"              "pkgconfig"             "pkgdown"              
+[223] "pkgload"               "plot3D"                "plotrix"              
+[226] "plyr"                  "png"                   "polyclip"             
+[229] "pracma"                "praise"                "predicts"             
+[232] "PresenceAbsence"       "prettymapr"            "prettyunits"          
+[235] "prioritizr"            "prioritizrdata"        "pROC"                 
+[238] "processx"              "prodlim"               "profvis"              
+[241] "progress"              "progressr"             "promises"             
+[244] "proxy"                 "ps"                    "purrr"                
+[247] "qpdf"                  "quadprog"              "quantreg"             
+[250] "R6"                    "ragg"                  "randomForest"         
+[253] "rangeModelMetadata"    "rappdirs"              "raptr"                
+[256] "raster"                "rasterVis"             "ratelimitr"           
+[259] "rcdd"                  "rcmdcheck"             "RColorBrewer"         
+[262] "Rcpp"                  "RcppArmadillo"         "RcppEigen"            
+[265] "RcppParallel"          "RcppProgress"          "readr"                
+[268] "readxl"                "rebird"                "recipes"              
+[271] "rematch"               "rematch2"              "remotes"              
+[274] "rentrez"               "reprex"                "reshape"              
+[277] "reshape2"              "rex"                   "rgbif"                
+[280] "rgdal"                 "rgeos"                 "ridigbio"             
+[283] "ritis"                 "rjags"                 "rJava"                
+[286] "rjson"                 "rlang"                 "rmarkdown"            
+[289] "rnaturalearth"         "RNCEP"                 "rncl"                 
+[292] "rngtools"              "ROCR"                  "rosm"                 
+[295] "rotl"                  "roxygen2"              "RPostgreSQL"          
+[298] "rprojroot"             "rredlist"              "rstatix"              
+[301] "rstudioapi"            "rversions"             "rvertnet"             
+[304] "rvest"                 "s2"                    "sass"                 
+[307] "scales"                "selectr"               "sessioninfo"          
+[310] "sf"                    "shades"                "shape"                
+[313] "shiny"                 "SIBER"                 "slam"                 
+[316] "slippymath"            "snow"                  "solrium"              
+[319] "sourcetools"           "sp"                    "spam"                 
+[322] "SparseM"               "spatstat"              "spatstat.data"        
+[325] "spatstat.explore"      "spatstat.geom"         "spatstat.linnet"      
+[328] "spatstat.model"        "spatstat.random"       "spatstat.sparse"      
+[331] "spatstat.utils"        "spocc"                 "SQUAREM"              
+[334] "stringdist"            "stringi"               "stringr"              
+[337] "svglite"               "sys"                   "systemfonts"          
+[340] "taxize"                "tensor"                "terra"                
+[343] "testthat"              "textshaping"           "tgp"                  
+[346] "tibble"                "tidyr"                 "tidyselect"           
+[349] "tidyverse"             "timechange"            "timeDate"             
+[352] "tinytex"               "treemap"               "triebeard"            
+[355] "tzdb"                  "units"                 "urlchecker"           
+[358] "urltools"              "usdm"                  "usethis"              
+[361] "utf8"                  "uuid"                  "vctrs"                
+[364] "viridis"               "viridisLite"           "vroom"                
+[367] "waldo"                 "whisker"               "WikidataQueryServiceR"
+[370] "WikidataR"             "WikipediR"             "wikitaxa"             
+[373] "withr"                 "wk"                    "worrms"               
+[376] "xfun"                  "XML"                   "xml2"                 
+[379] "xopen"                 "xtable"                "yaml"                 
+[382] "zip"                   "zoo"                   "base"                 
+[385] "boot"                  "class"                 "cluster"              
+[388] "codetools"             "compiler"              "datasets"             
+[391] "foreign"               "graphics"              "grDevices"            
+[394] "grid"                  "KernSmooth"            "lattice"              
+[397] "MASS"                  "methods"               "mgcv"                 
+[400] "nlme"                  "nnet"                  "parallel"             
+[403] "rpart"                 "spatial"               "splines"              
+[406] "stats"                 "stats4"                "survival"             
+[409] "tcltk"                 "tools"                 "translations"         
+[412] "utils"                )
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+lapply(list.of.packages,require,character.only=TRUE)
+rm(list.of.packages,new.packages)
+
+"knitr"
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

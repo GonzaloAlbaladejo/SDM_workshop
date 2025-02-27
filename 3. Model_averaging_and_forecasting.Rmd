@@ -108,7 +108,7 @@ f.GLM<-lapply(fut_env,function(x) predict(x,models$GLM,type="response")) # Futur
 * a Compare the scenarios
 ```{r}
 plot(p.GLM,col=viridis::inferno(100))
-panel(rast(future.s),col=viridis::inferno(100))
+panel(rast(f.GLM),col=viridis::inferno(100))
 ```
 
 # 2.2 Predict the future scenarios RF
