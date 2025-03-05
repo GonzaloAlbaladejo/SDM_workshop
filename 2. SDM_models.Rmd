@@ -86,6 +86,12 @@ a.1 Prepare the background and pseudo-absence information
   rX <- IUCN_ranges %>% filter(BINOMIAL==spp) %>% st_union()
 ```
 
+```{r}
+  plot(rX %>% st_geometry)
+  plot(sp_points %>% st_geometry(),col="tomato",add=T,pch=19)
+  
+```
+
 * Set up our study area
 ```{r set up the study area}
 # For the pseudo-absence data we are going to draw a buffer of 100 km around our presence data, so presence and absence data do not overlap
@@ -95,7 +101,7 @@ a.1 Prepare the background and pseudo-absence information
 # We are going to define our sampling area
   to_crop <- sp_points %>% st_buffer(dist = dist_buff) %>% st_union()
   sample_area <- rX %>% st_buffer(dist = dist_buff) %>% st_difference(to_crop) %>% st_union()
-  sample_area <- Stdy_area %>% st_intersection(sample_area)
+  sample_area <- Stdy_area %>% st_intersection(sample_area) # Takes some time!
 ```
 
 ```{r Check the sampling area}
@@ -138,6 +144,7 @@ par(mar=c(0,0,0,0))
                                 background_n = nrow(sp_points), TrainTest=1,
                                 range_samp=sample_area, weights.p=x))
 ```
+
 ```{r background points}
 # Set the background observations
   bk_types <- c("Random","BwData","BwData_inv")
@@ -192,6 +199,8 @@ plot(sample_area_bk %>% st_geometry()); points(bk_points[[1]][["Train"]],col="gr
          pch=15,col=c("grey","black","gold1","tomato"),bty="n",xpd=T,cex=0.8)
     }
 ```
+
+
 # b. Extract the data from the environmental information
 ```{r}
 # a.2 Extract the data from the environmental variables ----
@@ -356,7 +365,7 @@ cbi$Boyce
   y.glm <- performance_model(glm.1,dat=data.test[,-1],index_vals = data.test$record,threshold_seq = seq(0.01,0.99,by=0.01))
 
 # Threshold at Max TSS  
-TSS.threshold <- seq(0.01,0.99,by=0.01)[which.max(y.glm[rownames(y.glm) %in% "TSS",])]
+TSS.threshold <- seq(0.01,0.99,by=0.01)[which.max(y.glm[rownames(y.glm) %in% "TPR",])]
 TSS.threshold  
   
 ```
